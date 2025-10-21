@@ -6,8 +6,13 @@ import Image from "next/image"
 import { Card, CardContent } from "./_components/ui/card"
 import { Badge } from "./_components/ui/badge"
 import { Avatar, AvatarImage } from "./_components/ui/avatar"
+import { db } from "./_lib/prisma"
+import BarbershopItem from "./_components/barbershop-item"
 
-export default function Home() {
+export default async function Home() {
+  // Chamar o banco de dados
+  const barbershops = await db.barbershop.findMany({})
+  console.log({ barbershops })
   return (
     <>
       {/* Header */}
@@ -33,31 +38,42 @@ export default function Home() {
           />
         </div>
         {/* Agendamento */}
-        <div>
-          <Card className="mt-6">
-            <CardContent className="flex justify-between p-0">
-              {/* Esquerda */}
-              <div className="flex flex-col gap-2 py-5 pl-5">
-                <Badge variant="default" className="flex w-fit gap-2">
-                  <BadgeCheckIcon className="w-5" />
-                  Confirmado
-                </Badge>
-                <h3 className="font-bold">Corte de Cabelo</h3>
-                <div className="flex items-center gap-2">
-                  <Avatar className="h-6 w-6">
-                    <AvatarImage src="https://utfs.io/f/c97a2dc9-cf62-468b-a851-bfd2bdde775f-16p.png"></AvatarImage>
-                  </Avatar>
-                  <p className="text-sm">Barbearia FSW</p>
-                </div>
+        <h2 className="mb-2 mt-6 text-xs font-bold uppercase text-gray-400">
+          Agendamentos
+        </h2>
+        <Card className="mt-6">
+          <CardContent className="flex justify-between p-0">
+            {/* Esquerda */}
+            <div className="flex flex-col gap-2 py-5 pl-5">
+              <Badge variant="default" className="flex w-fit gap-2">
+                <BadgeCheckIcon className="w-5" />
+                Confirmado
+              </Badge>
+              <h3 className="font-bold">Corte de Cabelo</h3>
+              <div className="flex items-center gap-2">
+                <Avatar className="h-6 w-6">
+                  <AvatarImage src="https://utfs.io/f/c97a2dc9-cf62-468b-a851-bfd2bdde775f-16p.png"></AvatarImage>
+                </Avatar>
+                <p className="text-sm">Barbearia FSW</p>
               </div>
-              {/* Direita */}
-              <div className="flex flex-col items-center justify-center border-l-2 border-solid px-5">
-                <p className="text-sm">Agosto</p>
-                <p className="text-2xl">05</p>
-                <p className="text-sm">20:00</p>
-              </div>
-            </CardContent>
-          </Card>
+            </div>
+            {/* Direita */}
+            <div className="flex flex-col items-center justify-center border-l-2 border-solid px-5">
+              <p className="text-sm">Agosto</p>
+              <p className="text-2xl">05</p>
+              <p className="text-sm">20:00</p>
+            </div>
+          </CardContent>
+        </Card>
+
+        <h2 className="mb-3 mt-6 text-xs font-bold uppercase text-gray-400">
+          Recomendados
+        </h2>
+
+        <div className="flex gap-4 overflow-auto [&::-webkit-scrollbar]:hidden">
+          {barbershops.map((barbershop) => (
+            <BarbershopItem key={barbershop.id} barbershop={barbershop} />
+          ))}
         </div>
       </div>
     </>

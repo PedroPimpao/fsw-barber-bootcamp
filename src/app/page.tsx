@@ -1,13 +1,16 @@
+import { db } from "./_lib/prisma"
+
+import Image from "next/image"
 import { BadgeCheckIcon, SearchIcon } from "lucide-react"
+
+import BarbershopItem from "./_components/barbershop-item"
 import Header from "./_components/header"
+
 import { Button } from "./_components/ui/button"
 import { Input } from "./_components/ui/input"
-import Image from "next/image"
 import { Card, CardContent } from "./_components/ui/card"
 import { Badge } from "./_components/ui/badge"
 import { Avatar, AvatarImage } from "./_components/ui/avatar"
-import { db } from "./_lib/prisma"
-import BarbershopItem from "./_components/barbershop-item"
 
 export default async function Home() {
   // Chamar o banco de dados
@@ -28,11 +31,46 @@ export default async function Home() {
 
         {/* Busca */}
         <div className="mt-6 flex items-center gap-2">
-          <Input placeholder="Procure uma barbearia..." className="mt-5" />
+          <Input placeholder="Procure uma barbearia..." className="" />
           <Button>
             <SearchIcon />
           </Button>
         </div>
+
+        {/* Busca rápida */}
+        <div className="mt-6 flex gap-3 overflow-x-scroll [&::-webkit-scrollbar]:hidden">
+          <Button variant="secondary" className="gap-2">
+            <Image src="/cabelo.svg" alt="Cabelo" width={16} height={16} />
+            Cabelo
+          </Button>
+          <Button variant="secondary" className="gap-2">
+            <Image src="/barba.svg" alt="Barba" width={16} height={16} />
+            Barba
+          </Button>
+          <Button variant="secondary" className="gap-2">
+            <Image
+              src="/acabamento.svg"
+              alt="Acabamento"
+              width={16}
+              height={16}
+            />
+            Acabamento
+          </Button>
+          <Button variant="secondary" className="gap-2">
+            <Image src="/cabelo.svg" alt="Pézinho" width={16} height={16} />
+            Pézinho
+          </Button>
+          <Button variant="secondary" className="gap-2">
+            <Image
+              src="/sobrancelha.svg"
+              alt="Sobrancelha"
+              width={16}
+              height={16}
+            />
+            Sobrancelha
+          </Button>
+        </div>
+
         {/* Imagem */}
         <div className="relative mt-6 h-[150px] w-full">
           <Image

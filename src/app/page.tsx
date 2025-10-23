@@ -70,7 +70,7 @@ export default async function Home() {
         <BookingItem
           status="Confirmado"
           typeService="Corte de Cabelo"
-          barberName="RC Hair Studio"
+          barberName="Corte & Estilo"
           date={{ day: "05", month: "Agosto", hour: "20:00" }}
         />
 

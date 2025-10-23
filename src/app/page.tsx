@@ -22,7 +22,7 @@ export default async function Home() {
       name: "desc",
     },
   })
-  console.log({ barbershops })
+  // console.log({ barbershops })
 
   return (
     <>

@@ -1,3 +1,4 @@
+import ServiceItem from "@/app/_components/service-item"
 import Subtitle from "@/app/_components/subtitle"
 import { Button } from "@/app/_components/ui/button"
 import { db } from "@/app/_lib/prisma"
@@ -17,11 +18,16 @@ const BarbershopPage = async ({ params }: IBarbershop) => {
     where: {
       id: params.id,
     },
+    include: {
+      barbershopServices: true,
+    },
   })
 
   if (!barbershop) {
     notFound()
   }
+
+  console.log(barbershop.barbershopServices)
 
   return (
     <>
@@ -71,6 +77,14 @@ const BarbershopPage = async ({ params }: IBarbershop) => {
       <div className="space-y-3 border-b border-solid p-5">
         <Subtitle text="Sobre nós" />
         <p className="text-s text-justify">{barbershop?.description}</p>
+      </div>
+
+      {/* SERVIÇOS */}
+      <div className="p-5">
+        <Subtitle text="Serviços" />
+        {barbershop.barbershopServices.map((service) => (
+          <ServiceItem service={service} key={service.id} />
+        ))}
       </div>
     </>
   )

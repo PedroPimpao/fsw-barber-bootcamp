@@ -1,3 +1,4 @@
+import PhoneItem from "@/app/_components/phone-item"
 import ServiceItem from "@/app/_components/service-item"
 import Subtitle from "@/app/_components/subtitle"
 import { Button } from "@/app/_components/ui/button"
@@ -60,6 +61,7 @@ const BarbershopPage = async ({ params }: IBarbershop) => {
         </Button>
       </div>
 
+      {/* TÍTULO */}
       <div className="border-b border-solid p-5">
         <h1 className="mb-3 text-xl font-bold">{barbershop.name}</h1>
         <div className="mb-2 flex items-center">
@@ -80,10 +82,19 @@ const BarbershopPage = async ({ params }: IBarbershop) => {
       </div>
 
       {/* SERVIÇOS */}
-      <div className="p-5">
-        <Subtitle text="Serviços" />
-        {barbershop.barbershopServices.map((service) => (
-          <ServiceItem service={service} key={service.id} />
+      <div className="space-y-3 border-b border-solid p-5">
+        <Subtitle text="Serviços" classname="mb-3" />
+        <div className="space-y-3">
+          {barbershop.barbershopServices.map((service) => (
+            <ServiceItem service={service} key={service.id} />
+          ))}
+        </div>
+      </div>
+
+      {/* CONTATO */}
+      <div className="space-y-3 p-5">
+        {barbershop.phones.map((phone) => (
+          <PhoneItem phone={phone} key={phone} />
         ))}
       </div>
     </>

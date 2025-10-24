@@ -8,7 +8,7 @@ import Header from "./_components/header"
 
 import { Button } from "./_components/ui/button"
 import { Input } from "./_components/ui/input"
-import { Card, CardContent } from "./_components/ui/card"
+// import { Card, CardContent } from "./_components/ui/card"
 
 import { quickSearchOptions } from "./_constants/search"
 import BookingItem from "./_components/booking-item"
@@ -89,15 +89,6 @@ export default async function Home() {
           ))}
         </div>
       </div>
-      <footer>
-        <Card className="">
-          <CardContent className="px-5 py-6">
-            <p className="text-sm text-gray-400">
-              2023 Copyright <span className="font-bold">FSW Barber</span>
-            </p>
-          </CardContent>
-        </Card>
-      </footer>
     </>
   )
 }

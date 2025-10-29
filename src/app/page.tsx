@@ -1,18 +1,19 @@
 import { db } from "./_lib/prisma"
 
 import Image from "next/image"
-import { SearchIcon } from "lucide-react"
+// import { SearchIcon } from "lucide-react"
 
 import BarbershopItem from "./_components/barbershop-item"
 import Header from "./_components/header"
 
 import { Button } from "./_components/ui/button"
-import { Input } from "./_components/ui/input"
+// import { Input } from "./_components/ui/input"
 // import { Card, CardContent } from "./_components/ui/card"
 
 import { quickSearchOptions } from "./_constants/search"
 import BookingItem from "./_components/booking-item"
 import Subtitle from "./_components/subtitle"
+import Search from "./_components/search"
 
 export default async function Home() {
   // Chamar o banco de dados
@@ -33,11 +34,8 @@ export default async function Home() {
         <p>Segunda-Feira, 20 de Outubro</p>
 
         {/* Busca */}
-        <div className="mt-6 flex items-center gap-2">
-          <Input placeholder="Procure uma barbearia..." className="" />
-          <Button>
-            <SearchIcon />
-          </Button>
+        <div className="mt-6">
+          <Search />
         </div>
 
         {/* Busca rápida */}

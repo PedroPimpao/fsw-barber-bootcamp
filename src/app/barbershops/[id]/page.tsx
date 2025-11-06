@@ -93,7 +93,11 @@ const BarbershopPage = async ({ params }: IBarbershop) => {
         <Subtitle text="Serviços" classname="mb-3" />
         <div className="space-y-3">
           {barbershop.barbershopServices.map((service) => (
-            <ServiceItem service={service} key={service.id} />
+            <ServiceItem
+              service={service}
+              barbershop={barbershop}
+              key={service.id}
+            />
           ))}
         </div>
       </div>

@@ -20,6 +20,9 @@ import { createBooking } from "../_actions/create-booking"
 import { toast } from "@/hooks/use-toast"
 import { useSession } from "next-auth/react"
 import { getBookings } from "../_actions/get-bookings"
+import { Dialog } from "@radix-ui/react-dialog"
+import { DialogContent } from "./ui/dialog"
+import SignInDialog from "./sign-in-dialog"
 
 interface IServiceItem {
   service: BarbershopServices
@@ -44,6 +47,7 @@ const getTimeList = (bookings: Booking[]) => {
 }
 
 const ServiceItem = ({ service, barbershop }: IServiceItem) => {
+  const [signInDialogIsOpen, setSignInDialogIsOpen] = useState(false)
   const { data } = useSession()
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined)
   const [selectedTime, setSelectedTime] = useState<string | undefined>(
@@ -64,15 +68,19 @@ const ServiceItem = ({ service, barbershop }: IServiceItem) => {
     }
     fetch()
   }, [selectedDate, service.id])
-  console.log(dayBookings)
 
+const handleBookingClick = () => {
+  if(data?.user){
+    return setBookingSheetIsOpen(true)
+  }
+  return setSignInDialogIsOpen(true)
+}
 
   const handleBookingSheetOpenChange = () => {
     setSelectedDate(undefined)
     setSelectedTime(undefined)
     setDayBookings([])
     setBookingSheetIsOpen(false)
-
   }
   const handleSelectedDate = (date: Date | undefined) => {
     setSelectedDate(date)
@@ -136,12 +144,18 @@ const ServiceItem = ({ service, barbershop }: IServiceItem) => {
                   currency: "BRL",
                 }).format(Number(service.price))}
               </p>
-              <Sheet open={bookingSheetIsOpen} onOpenChange={handleBookingSheetOpenChange}>
-                
-                  <Button variant={"secondary"} size={"sm"} onClick={()=> setBookingSheetIsOpen(true)}>
-                    Reservar
-                  </Button>
-                
+              <Sheet
+                open={bookingSheetIsOpen}
+                onOpenChange={handleBookingSheetOpenChange}
+              >
+                <Button
+                  variant={"secondary"}
+                  size={"sm"}
+                  onClick={handleBookingClick}
+                >
+                  Reservar
+                </Button>
+
                 <SheetContent className="px-0">
                   <SheetHeader>
                     <SheetTitle>Fazer reserva</SheetTitle>
@@ -153,7 +167,7 @@ const ServiceItem = ({ service, barbershop }: IServiceItem) => {
                       locale={ptBR}
                       selected={selectedDate}
                       onSelect={handleSelectedDate}
-                      disabled={{before: new Date()}}
+                      disabled={{ before: new Date() }}
                       styles={{
                         head_cell: {
                           width: "100%",
@@ -234,14 +248,12 @@ const ServiceItem = ({ service, barbershop }: IServiceItem) => {
                     </div>
                   )}
                   <SheetFooter className="mt-5 px-5">
-                   
-                      <Button
-                        disabled={selectedDate && selectedTime ? false : true}
-                        onClick={handleCreateBooking}
-                      >
-                        Confirmar
-                      </Button>
-                 
+                    <Button
+                      disabled={selectedDate && selectedTime ? false : true}
+                      onClick={handleCreateBooking}
+                    >
+                      Confirmar
+                    </Button>
                   </SheetFooter>
                 </SheetContent>
               </Sheet>
@@ -249,6 +261,12 @@ const ServiceItem = ({ service, barbershop }: IServiceItem) => {
           </div>
         </CardContent>
       </Card>
+
+      <Dialog open={signInDialogIsOpen} onOpenChange={(open)=>setSignInDialogIsOpen(open)}>
+        <DialogContent>
+          <SignInDialog />
+        </DialogContent>
+      </Dialog>
     </>
   )
 }

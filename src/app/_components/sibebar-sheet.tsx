@@ -16,18 +16,14 @@ import {
 } from "./ui/dialog"
 import { signIn, signOut, useSession } from "next-auth/react"
 import { Avatar, AvatarImage } from "./ui/avatar"
+import SignInDialog from "./sign-in-dialog"
 
 const SidebarSheet = () => {
   const { data } = useSession()
 
-  const handleLoginWinthGoogleClick = async () => {
-    await signIn("google")
-  }
-
   const handleLogOutClick = async () => {
     signOut()
   }
-  console.log(data?.user)
 
   return (
     <>
@@ -57,24 +53,8 @@ const SidebarSheet = () => {
                     <LogInIcon />
                   </Button>
                 </DialogTrigger>
-                <DialogContent className="rounded-md">
-                  <DialogHeader>
-                    <DialogTitle>Faça seu login</DialogTitle>
-                    <DialogDescription>Faça seu login com...</DialogDescription>
-                  </DialogHeader>
-                  <Button
-                    variant={"outline"}
-                    className="gap-1 font-bold"
-                    onClick={handleLoginWinthGoogleClick}
-                  >
-                    <Image
-                      src={`/google.svg`}
-                      alt="Google Icon"
-                      width={18}
-                      height={18}
-                    />
-                    Google
-                  </Button>
+                <DialogContent className="w-[90%] rounded-md">
+                  <SignInDialog />
                 </DialogContent>
               </Dialog>
             </>

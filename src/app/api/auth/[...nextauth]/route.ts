@@ -4,6 +4,15 @@ import GoogleProvider from "next-auth/providers/google"
 import { PrismaAdapter } from "@auth/prisma-adapter"
 import { Adapter } from "next-auth/adapters"
 
+// export interface IUserSession {
+//   user: {
+//     id: string
+//     name?: string | null
+//     email?: string | null
+//     image?: string | null
+//   }
+// }
+
 const handler = NextAuth({
   adapter: PrismaAdapter(db) as Adapter,
   providers: [
@@ -12,6 +21,15 @@ const handler = NextAuth({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
     }),
   ],
+  callbacks: {
+    async session({ session, user }) {
+      session.user = {
+        ...session.user,
+        id: user.id,
+      } as object
+      return session
+    },
+  },
 })
 
 export { handler as GET, handler as POST }

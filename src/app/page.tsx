@@ -1,30 +1,45 @@
 import { db } from "./_lib/prisma"
-
 import Image from "next/image"
-// import { SearchIcon } from "lucide-react"
-
 import BarbershopItem from "./_components/barbershop-item"
 import Header from "./_components/header"
-
 import { Button } from "./_components/ui/button"
-// import { Input } from "./_components/ui/input"
-// import { Card, CardContent } from "./_components/ui/card"
-
 import { quickSearchOptions } from "./_constants/search"
-import BookingItem from "./_components/booking-item"
 import Subtitle from "./_components/subtitle"
 import Search from "./_components/search"
 import Link from "next/link"
+import { getServerSession } from "next-auth"
+import { authOpitons } from "./_lib/auth"
+import BookingItem from "./_components/booking-item"
 
 export default async function Home() {
-  // Chamar o banco de dados
+  const session = await getServerSession(authOpitons)
   const barbershops = await db.barbershop.findMany({})
   const popularBarbershops = await db.barbershop.findMany({
     orderBy: {
       name: "desc",
     },
   })
-  // console.log({ barbershops })
+  const bookings = session?.user
+    ? await db.booking.findMany({
+        where: {
+          userId: (session.user as any).id,
+          date: {
+            gte: new Date()
+          }
+        },
+        
+        include: {
+          service: {
+            include: {
+              barbershop: true,
+            },
+          },
+        },
+        orderBy: {
+          date: "asc",
+        }
+      })
+    : []
 
   return (
     <>
@@ -73,12 +88,11 @@ export default async function Home() {
         {/* Agendamento */}
         <Subtitle text="Agendamentos" />
 
-        <BookingItem
-          status="Confirmado"
-          typeService="Corte de Cabelo"
-          barberName="Corte & Estilo"
-          date={{ day: "05", month: "Agosto", hour: "20:00" }}
-        />
+        <div className="flex overflow-x-auto [&::-webkit-scrollbar]:hidden gap-3">
+          {bookings.map((booking) => (
+            <BookingItem booking={booking} key={booking.id}/>
+          ))}
+        </div>
 
         <Subtitle text="Recomendados" />
 

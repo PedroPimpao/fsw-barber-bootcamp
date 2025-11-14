@@ -2,44 +2,59 @@ import { BadgeCheckIcon } from "lucide-react"
 import { Badge } from "./ui/badge"
 import { Card, CardContent } from "./ui/card"
 import { Avatar, AvatarImage } from "./ui/avatar"
+import { Prisma } from "@/generated/prisma"
+import { format, isFuture } from "date-fns"
+import { ptBR } from "date-fns/locale"
 
-interface IDate {
-  day: string
-  month: string
-  hour: string
+interface BookingItemProps {
+  booking: Prisma.BookingGetPayload<{
+    include: {
+      service: {
+        include: {
+          barbershop: true
+        }
+      }
+    }
+  }>
 }
 
-interface IBooking {
-  status: string
-  typeService: string
-  barberName: string
-  date: IDate
-}
+const BookingItem = ({ booking }: BookingItemProps) => {
+  const isConfirmed = isFuture(booking.date)
 
-const BookingItem = ({ status, typeService, barberName, date }: IBooking) => {
   return (
     <>
-      <Card className="mt-6">
+      <Card className="min-w-[90%]">
         <CardContent className="flex justify-between p-0">
           {/* Esquerda */}
           <div className="flex flex-col gap-2 py-5 pl-5">
-            <Badge variant="default" className="flex w-fit gap-2">
+            <Badge
+              variant={isConfirmed ? "default" : "secondary"}
+              className="flex w-fit gap-2"
+            >
               <BadgeCheckIcon className="w-5" />
-              {status}
+              {isConfirmed ? "Confirmado" : "Finalizado"}
             </Badge>
-            <h3 className="font-bold">{typeService}</h3>
+            <h3 className="font-bold">{booking.service.name}</h3>
             <div className="flex items-center gap-2">
               <Avatar className="h-6 w-6">
-                <AvatarImage src="https://utfs.io/f/c97a2dc9-cf62-468b-a851-bfd2bdde775f-16p.png"></AvatarImage>
+                <AvatarImage
+                  src={booking.service.barbershop.imageUrl}
+                ></AvatarImage>
               </Avatar>
-              <p className="text-sm">{barberName}</p>
+              <p className="text-sm">{booking.service.barbershop.name}</p>
             </div>
           </div>
           {/* Direita */}
           <div className="flex flex-col items-center justify-center border-l-2 border-solid px-5">
-            <p className="text-sm">{date.month}</p>
-            <p className="text-2xl">{date.day}</p>
-            <p className="text-sm">{date.hour}</p>
+            <p className="text-sm capitalize">
+              {format(booking.date, "MMMM", { locale: ptBR })}
+            </p>
+            <p className="text-2xl">
+              {format(booking.date, "dd", { locale: ptBR })}
+            </p>
+            <p className="text-sm">
+              {format(booking.date, "HH:mm", { locale: ptBR })}
+            </p>
           </div>
         </CardContent>
       </Card>

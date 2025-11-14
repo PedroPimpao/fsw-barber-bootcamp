@@ -20,8 +20,7 @@ import { createBooking } from "../_actions/create-booking"
 import { toast } from "@/hooks/use-toast"
 import { useSession } from "next-auth/react"
 import { getBookings } from "../_actions/get-bookings"
-import { Dialog } from "@radix-ui/react-dialog"
-import { DialogContent } from "./ui/dialog"
+import { Dialog, DialogContent } from "./ui/dialog"
 import SignInDialog from "./sign-in-dialog"
 
 interface IServiceItem {

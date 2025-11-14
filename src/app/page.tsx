@@ -85,15 +85,13 @@ export default async function Home() {
             className="rounded-xl object-cover"
           />
         </div>
-        
+
         {/* Agendamento */}
         {bookings.length > 0 && (
           <>
-            <Subtitle text="Agendamentos" />
+            <Subtitle text="Agendamento mais próximo" />
             <div className="flex gap-3 overflow-x-auto [&::-webkit-scrollbar]:hidden">
-              {bookings.map((booking) => (
-                <BookingItem booking={booking} key={booking.id} />
-              ))}
+              <BookingItem booking={bookings[0]}/>
             </div>
           </>
         )}

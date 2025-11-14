@@ -30,8 +30,6 @@ const BarbershopPage = async ({ params }: IBarbershop) => {
     notFound()
   }
 
-  console.log(barbershop.barbershopServices)
-
   return (
     <>
       {/* IMAGEM */}

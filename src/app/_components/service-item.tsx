@@ -15,13 +15,14 @@ import { Calendar } from "./ui/calendar"
 import { ptBR } from "date-fns/locale"
 import { TIME_LIST } from "@/app/_constants/time-list"
 import { useEffect, useState } from "react"
-import { format, set } from "date-fns"
+import { set } from "date-fns"
 import { createBooking } from "../_actions/create-booking"
 import { toast } from "@/hooks/use-toast"
 import { useSession } from "next-auth/react"
 import { getBookings } from "../_actions/get-bookings"
 import { Dialog, DialogContent } from "./ui/dialog"
 import SignInDialog from "./sign-in-dialog"
+import BookingSummary from "./booking-summary"
 
 interface IServiceItem {
   service: BarbershopServices
@@ -68,12 +69,12 @@ const ServiceItem = ({ service, barbershop }: IServiceItem) => {
     fetch()
   }, [selectedDate, service.id])
 
-const handleBookingClick = () => {
-  if(data?.user){
-    return setBookingSheetIsOpen(true)
+  const handleBookingClick = () => {
+    if (data?.user) {
+      return setBookingSheetIsOpen(true)
+    }
+    return setSignInDialogIsOpen(true)
   }
-  return setSignInDialogIsOpen(true)
-}
 
   const handleBookingSheetOpenChange = () => {
     setSelectedDate(undefined)
@@ -211,38 +212,14 @@ const handleBookingClick = () => {
 
                   {selectedTime && selectedDate && (
                     <div className="p-5">
-                      <Card>
-                        <CardContent className="space-y-3 p-3">
-                          <div className="flex items-center justify-between">
-                            <h2 className="font-bold">{service.name}</h2>
-                            <p className="text-sm font-bold">
-                              {Intl.NumberFormat("pt-BR", {
-                                style: "currency",
-                                currency: "BRL",
-                              }).format(Number(service.price))}
-                            </p>
-                          </div>
-
-                          <div className="flex items-center justify-between">
-                            <h2 className="text-sm text-gray-400">Data</h2>
-                            <p className="text-sm">
-                              {format(selectedDate, "d 'de' MMMM", {
-                                locale: ptBR,
-                              })}
-                            </p>
-                          </div>
-
-                          <div className="flex items-center justify-between">
-                            <h2 className="text-sm text-gray-400">Horário</h2>
-                            <p className="text-sm">{selectedTime}</p>
-                          </div>
-
-                          <div className="flex items-center justify-between">
-                            <h2 className="text-sm text-gray-400">Barbearia</h2>
-                            <p className="text-sm">{barbershop.name}</p>
-                          </div>
-                        </CardContent>
-                      </Card>
+                      
+                      <BookingSummary
+                        serviceName={service.name}
+                        barbershopName={barbershop.name}
+                        servicePrice={service.price}
+                        serviceDate={selectedDate}
+                        serviceTime={selectedTime}
+                      />
                     </div>
                   )}
                   <SheetFooter className="mt-5 px-5">
@@ -260,7 +237,10 @@ const handleBookingClick = () => {
         </CardContent>
       </Card>
 
-      <Dialog open={signInDialogIsOpen} onOpenChange={(open)=>setSignInDialogIsOpen(open)}>
+      <Dialog
+        open={signInDialogIsOpen}
+        onOpenChange={(open) => setSignInDialogIsOpen(open)}
+      >
         <DialogContent>
           <SignInDialog />
         </DialogContent>

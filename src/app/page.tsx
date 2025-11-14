@@ -10,6 +10,8 @@ import Link from "next/link"
 import { getServerSession } from "next-auth"
 import { authOpitons } from "./_lib/auth"
 import BookingItem from "./_components/booking-item"
+import { format } from "date-fns"
+import { ptBR } from "date-fns/locale"
 
 export default async function Home() {
   const session = await getServerSession(authOpitons)
@@ -46,8 +48,27 @@ export default async function Home() {
       {/* Header */}
       <Header />
       <div className="p-5">
-        <h2 className="text-xl font-bold">Olá, Pedro</h2>
-        <p>Segunda-Feira, 20 de Outubro</p>
+        <h2 className="text-xl font-bold">
+          Olá, {session?.user ? session.user.name : "bem vindo"}!
+        </h2>
+
+        <p>
+          <span className="capitalize">
+            {format(new Date(), "EEEE, ", {
+              locale: ptBR,
+            })}
+          </span>
+          <span>
+            {format(new Date(), "d 'de'", {
+              locale: ptBR,
+            })}
+          </span>
+          <span className="capitalize">
+            {format(new Date(), " MMMM", {
+              locale: ptBR,
+            })}
+          </span>
+        </p>
 
         {/* Busca */}
         <div className="mt-6">
@@ -91,7 +112,7 @@ export default async function Home() {
           <>
             <Subtitle text="Agendamento mais próximo" />
             <div className="flex gap-3 overflow-x-auto [&::-webkit-scrollbar]:hidden">
-              <BookingItem booking={bookings[0]}/>
+              <BookingItem booking={bookings[0]} />
             </div>
           </>
         )}

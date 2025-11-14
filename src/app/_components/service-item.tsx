@@ -17,12 +17,12 @@ import { TIME_LIST } from "@/app/_constants/time-list"
 import { useEffect, useState } from "react"
 import { set } from "date-fns"
 import { createBooking } from "../_actions/create-booking"
-import { toast } from "@/hooks/use-toast"
 import { useSession } from "next-auth/react"
 import { getBookings } from "../_actions/get-bookings"
 import { Dialog, DialogContent } from "./ui/dialog"
 import SignInDialog from "./sign-in-dialog"
 import BookingSummary from "./booking-summary"
+import { toast } from "sonner"
 
 interface IServiceItem {
   service: BarbershopServices
@@ -104,17 +104,10 @@ const ServiceItem = ({ service, barbershop }: IServiceItem) => {
         date: newDate,
       })
       handleBookingSheetOpenChange()
-      toast({
-        title: "Sucesso!",
-        description: "Reserva criada com sucesso.",
-      })
+      toast.success("Reserva criada com sucesso!")
     } catch (error) {
       console.log(error)
-      toast({
-        title: "Erro",
-        description:
-          "Não foi possível criar a reserva. Tente novamente mais tarde.",
-      })
+      toast.error("Erro ao criar reserva!")
     }
   }
 

@@ -24,10 +24,10 @@ export default async function Home() {
         where: {
           userId: (session.user as any).id,
           date: {
-            gte: new Date()
-          }
+            gte: new Date(),
+          },
         },
-        
+
         include: {
           service: {
             include: {
@@ -37,7 +37,7 @@ export default async function Home() {
         },
         orderBy: {
           date: "asc",
-        }
+        },
       })
     : []
 
@@ -85,14 +85,18 @@ export default async function Home() {
             className="rounded-xl object-cover"
           />
         </div>
+        
         {/* Agendamento */}
-        <Subtitle text="Agendamentos" />
-
-        <div className="flex overflow-x-auto [&::-webkit-scrollbar]:hidden gap-3">
-          {bookings.map((booking) => (
-            <BookingItem booking={booking} key={booking.id}/>
-          ))}
-        </div>
+        {bookings.length > 0 && (
+          <>
+            <Subtitle text="Agendamentos" />
+            <div className="flex gap-3 overflow-x-auto [&::-webkit-scrollbar]:hidden">
+              {bookings.map((booking) => (
+                <BookingItem booking={booking} key={booking.id} />
+              ))}
+            </div>
+          </>
+        )}
 
         <Subtitle text="Recomendados" />
 

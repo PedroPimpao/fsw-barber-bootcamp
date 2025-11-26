@@ -21,4 +21,5 @@ export const authOpitons: AuthOptions = {
       return session
     },
   },
+  secret: process.env.NEXT_AUTH_SECRET,
 }

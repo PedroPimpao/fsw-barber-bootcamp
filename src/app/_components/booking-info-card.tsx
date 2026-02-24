@@ -11,11 +11,12 @@ interface BookingInfoProps {
     barbershopName: string
     barbershopImageURL: string
     servceDate: Date
+    openSheet: () => void
 }
 
 const BookingInfoCard = ( booking : BookingInfoProps ) => {
   return (
-    <Card className="min-w-[90%]">
+    <Card className="min-w-[100%] cursor-pointer" onClick={booking.openSheet}>
       <CardContent className="flex justify-between p-0">
         {/* Esquerda */}
         <div className="flex flex-col gap-2 py-5 pl-5">

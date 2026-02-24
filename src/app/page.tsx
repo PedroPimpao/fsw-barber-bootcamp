@@ -80,7 +80,7 @@ export default async function Home() {
         </div>
 
         {/* Imagem */}
-        <div className="relative mt-6 h-[150px] w-full">
+        <div className="relative mt-6 h-[150px] w-full md:hidden">
           <Image
             src="/banner-01.png"
             alt="Agende nos melhores com FSW Barber"
@@ -94,7 +94,7 @@ export default async function Home() {
           <>
             <Subtitle text="Agendamento mais próximo" />
             <div className="flex gap-3 overflow-x-auto [&::-webkit-scrollbar]:hidden">
-              <BookingItem booking={bookings[0]} />
+              <BookingItem booking={JSON.parse(JSON.stringify(bookings[0]))} />
             </div>
           </>
         )}

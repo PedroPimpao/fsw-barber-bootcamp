@@ -13,23 +13,24 @@ interface IBarbershopsPage {
 }
 
 const BarbershopsPage = async ({ searchParams }: IBarbershopsPage) => {
+  const { title, service } = await searchParams
   const barbershops = await db.barbershop.findMany({
     where: {
       OR: [
-        searchParams?.title
+        title
           ? {
               name: {
-                contains: searchParams?.title,
+                contains: title,
                 mode: "insensitive",
               },
             }
           : {},
-        searchParams?.service
+        service
           ? {
               barbershopServices: {
                 some: {
                   name: {
-                    contains: searchParams?.service,
+                    contains: service,
                     mode: "insensitive",
                   },
                 },
@@ -48,7 +49,7 @@ const BarbershopsPage = async ({ searchParams }: IBarbershopsPage) => {
 
       <div className="px-5">
         <Subtitle
-          text={`Resultados para "${searchParams.title || searchParams.service}"`}
+          text={`Resultados para "${title || service}"`}
         />
         <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
           {barbershops.map((barbershop) => (

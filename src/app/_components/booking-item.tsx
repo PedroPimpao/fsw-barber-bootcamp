@@ -54,6 +54,10 @@ const BookingItem = ({ booking }: BookingItemProps) => {
     setIsSheetOpen(isOpen)
   }
 
+  const openSheet = () => {
+    setIsSheetOpen(true)
+  }
+
   const {
     service: { barbershop },
   } = booking
@@ -69,17 +73,17 @@ const BookingItem = ({ booking }: BookingItemProps) => {
     }
   }
 
-
   return (
     <>
       <Sheet open={isSheetOpen} onOpenChange={handleSheetOpenChange}>
-        <SheetTrigger className="w-[100%]">
+        <SheetTrigger className="w-full" asChild>
           <BookingInfoCard
             isConfirmed={isConfirmed}
             serviceName={booking.service.name}
             barbershopImageURL={barbershop.imageUrl}
             barbershopName={barbershop.name}
             servceDate={booking.date}
+            openSheet={openSheet}
           />
         </SheetTrigger>
         <SheetContent className="w-[90%]">
@@ -132,15 +136,15 @@ const BookingItem = ({ booking }: BookingItemProps) => {
             </div>
           </div>
           <SheetFooter className="mt-6">
-            <div className="flex items-center gap-3">
+            <div className="flex w-full items-center gap-3">
               <SheetClose asChild>
-                <Button variant={"outline"} className="w-full">
+                <Button variant={"outline"} className="flex-1">
                   Voltar
                 </Button>
               </SheetClose>
               {isConfirmed && (
                 <Dialog>
-                  <DialogTrigger className="w-full">
+                  <DialogTrigger className="flex-1" asChild>
                     <Button variant={"destructive"} className="w-full">
                       Cancelar reserva
                     </Button>
@@ -154,13 +158,15 @@ const BookingItem = ({ booking }: BookingItemProps) => {
                       </DialogDescription>
                     </DialogHeader>
                     <DialogFooter>
-                      <DialogClose className="flex flex-row gap-3">
-                        <Button variant={"outline"} className="w-full">
+                      <DialogClose asChild>
+                        <Button variant={"outline"} className="flex-1">
                           Cancelar
                         </Button>
+                      </DialogClose>
+                      <DialogClose asChild>
                         <Button
                           variant={"destructive"}
-                          className="w-full"
+                          className="flex-1"
                           onClick={handleCancelBooking}
                         >
                           Confirmar

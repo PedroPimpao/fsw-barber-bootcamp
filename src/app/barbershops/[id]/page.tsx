@@ -17,9 +17,10 @@ interface IBarbershop {
 }
 
 const BarbershopPage = async ({ params }: IBarbershop) => {
+  const { id } = await params
   const barbershop = await db.barbershop.findUnique({
     where: {
-      id: params.id,
+      id: id,
     },
     include: {
       barbershopServices: true,
@@ -92,9 +93,9 @@ const BarbershopPage = async ({ params }: IBarbershop) => {
         <div className="space-y-3">
           {barbershop.barbershopServices.map((service) => (
             <ServiceItem
-              service={service}
-              barbershop={barbershop}
-              key={service.id}
+              service={JSON.parse(JSON.stringify(service))}
+              barbershop={JSON.parse(JSON.stringify(barbershop))}
+              key={JSON.parse(JSON.stringify(service.id))}
             />
           ))}
         </div>
